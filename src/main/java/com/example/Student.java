@@ -9,6 +9,12 @@ public class Student {
     private List<Double> marks;
 
     public Student(String studentId, String name) {
+        if (studentId == null || studentId.trim().isEmpty()) {
+            throw new IllegalArgumentException("Student ID cannot be null or empty.");
+        }
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Student name cannot be null or empty.");
+        }
         this.studentId = studentId;
         this.name = name;
         this.marks = new ArrayList<>();
@@ -27,12 +33,18 @@ public class Student {
     }
 
     public void addMark(double mark) {
-        // BUG: Accepts negative marks and values > 100 without validation
+        if (mark < 0 || mark > 100) {
+            throw new IllegalArgumentException(
+                String.format("Mark must be between 0.0 and 100.0. Provided: %.2f", mark)
+            );
+        }
         this.marks.add(mark);
     }
 
-    // BUG: Division by zero when marks list is empty
     public double calculateAverage() {
+        if (marks.isEmpty()) {
+            throw new IllegalStateException("No marks available to calculate average.");
+        }
         double sum = 0;
         for (double m : marks) {
             sum += m;
@@ -40,13 +52,12 @@ public class Student {
         return sum / marks.size();
     }
 
-    // BUG: Flawed grade calculation thresholds
     public String getLetterGrade() {
         double avg = calculateAverage();
-        if (avg > 90) return "A";
-        if (avg > 80) return "B";
-        if (avg > 70) return "C";
-        if (avg > 60) return "D";
+        if (avg >= 90.0) return "A";
+        if (avg >= 80.0) return "B";
+        if (avg >= 70.0) return "C";
+        if (avg >= 60.0) return "D";
         return "F";
     }
 }
