@@ -42,6 +42,9 @@ public class Student {
     }
 
     public double calculateAverage() {
+        if (marks.isEmpty()) {
+            throw new IllegalStateException("No marks available to calculate average.");
+        }
         double sum = 0;
         for (double m : marks) {
             sum += m;
@@ -51,10 +54,10 @@ public class Student {
 
     public String getLetterGrade() {
         double avg = calculateAverage();
-        if (avg > 90) return "A";
-        if (avg > 80) return "B";
-        if (avg > 70) return "C";
-        if (avg > 60) return "D";
+        if (avg >= 90.0) return "A";
+        if (avg >= 80.0) return "B";
+        if (avg >= 70.0) return "C";
+        if (avg >= 60.0) return "D";
         return "F";
     }
 }
